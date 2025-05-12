@@ -1,0 +1,17 @@
+/* Login Page Background */
+body {
+  background: linear-gradient(135deg, #dbeafe, #ffffff); /* light blue to white */
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card Styling */
+.card {
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+  

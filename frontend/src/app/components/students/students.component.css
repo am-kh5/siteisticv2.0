@@ -1,0 +1,51 @@
+.class-header {
+    position: relative;
+    padding-left: 15px;
+  }
+  
+  .class-header::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #0d6efd;
+    border-radius: 2px;
+  }
+  
+  .table th {
+    font-weight: 600;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    border-bottom: none;
+  }
+  /* Add these styles to your existing CSS */
+.edit-form {
+    border-left: 4px solid var(--bs-primary);
+    transition: all 0.3s ease;
+  }
+  
+  .edit-form h5 {
+    color: var(--bs-primary);
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn-group .btn {
+    transition: all 0.2s ease;
+  }
+  
+  .btn-group .btn:hover {
+    transform: translateY(-1px);
+  }

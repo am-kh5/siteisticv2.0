@@ -1,0 +1,83 @@
+.container {
+    padding: 20px;
+  }
+  
+  .class-section {
+    margin-bottom: 30px;
+  }
+  
+  .student-table, .grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .student-table th, .student-table td,
+  .grades-table th, .grades-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .student-table th, .grades-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .add-grade-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .close-button {
+    margin-top: 20px;
+  }
+  
+  .loading, .error {
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .loading {
+    background-color: #f0f0f0;
+  }
+  
+  .error {
+    background-color: #ffdddd;
+    color: #ff0000;
+  }
+  /* You can keep this if you want smoother experience */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.modal {
+  z-index: 1050;
+}

@@ -1,0 +1,111 @@
+<div class="container py-4">
+  <h2 class="mb-4">Manage Student Grades</h2>
+
+  <div *ngIf="isLoading" class="alert alert-info">Loading...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error">
+    <div *ngFor="let classe of getClasses()" class="mb-5">
+      <h4 class="mb-3">Class: {{ classe }}</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Grades</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of groupedStudents[classe]">
+              <td>{{ student.user_id }}</td>
+              <td>{{ student.username }}</td>
+              <td>{{ student.email }}</td>
+              <td>
+                <span *ngIf="student.grades.length > 0">
+                  {{ student.grades.length }} subjects
+                </span>
+                <span *ngIf="student.grades.length === 0">No grades</span>
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" (click)="startEdit(student)">Manage Grades</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grade Management Modal -->
+  <div *ngIf="editingStudent" class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Manage Grades for {{ editingStudent.username }}</h5>
+          <button type="button" class="btn-close" (click)="cancelEdit()"></button>
+        </div>
+        <div class="modal-body">
+
+          <div *ngIf="editingStudent.grades.length > 0" class="mb-4">
+            <h6>Existing Grades</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="table-light">
+                  <tr>
+                    <th>Subject</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let grade of editingStudent.grades">
+                    <td>{{ grade.subject_name }} ({{ grade.subject_code }})</td>
+                    <td>
+                      <input type="number" class="form-control form-control-sm" [(ngModel)]="grade.grade" min="0" max="20" step="0.01">
+                    </td>
+                    <td>
+                      <button class="btn btn-success btn-sm me-2" (click)="updateGrade(grade)">Update</button>
+                      <button class="btn btn-danger btn-sm" (click)="deleteGrade(grade.grade_id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="availableSubjects.length > 0" class="mb-4">
+            <h6>Add New Grade</h6>
+            <div class="row g-2">
+              <div class="col-md-6">
+                <select class="form-select form-select-sm" [(ngModel)]="selectedSubject">
+                  <option *ngFor="let subject of availableSubjects" [ngValue]="subject">
+                    {{ subject.subject_name }} ({{ subject.subject_code }})
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="newGrade" placeholder="Grade (0-20)" min="0" max="20" step="0.01">
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-primary btn-sm w-100" (click)="addGrade()">Add Grade</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="availableSubjects.length === 0 && editingStudent.grades.length > 0">
+            <p class="text-muted">This student has grades for all available subjects.</p>
+          </div>
+          <div *ngIf="editingStudent.grades.length === 0 && availableSubjects.length === 0">
+            <p class="text-muted">No subjects available for grading.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cancelEdit()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

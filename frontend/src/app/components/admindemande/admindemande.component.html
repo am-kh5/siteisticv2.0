@@ -1,0 +1,121 @@
+<div class="container mt-4">
+    <h2>Student Requests Management</h2>
+    
+    @if (isLoading) {
+      <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading requests...</p>
+      </div>
+    }
+  
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    }
+  
+    @if (requests && !isLoading && !error) {
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Student ID</th>
+              <th>Type</th>
+              <th>Motive</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (request of requests; track request.request_id) {
+              <tr>
+                <td>{{ request.request_id }}</td>
+                <td>{{ request.student_id }}</td>
+                <td>{{ getRequestTypeDisplay(request.request_type) }}</td>
+                <td>{{ request.motive }}</td>
+                <td>
+                  <span [class]="getStatusClass(request.status)">
+                    {{ getStatusDisplay(request.status) }}
+                  </span>
+                </td>
+                <td>{{ request.created_at | date:'medium' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" (click)="selectRequest(request)">
+                    Manage
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+  
+      @if (requests.length === 0) {
+        <div class="alert alert-info">
+          No requests found.
+        </div>
+      }
+    }
+  </div>
+  
+  <!-- Modal for request management -->
+  @if (selectedRequest) {
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Manage Request #{{ selectedRequest.request_id }}</h5>
+            <button type="button" class="btn-close" (click)="selectedRequest = null"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Student ID</label>
+              <input type="text" class="form-control" [value]="selectedRequest.student_id" readonly>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Request Type</label>
+              <input type="text" class="form-control" [value]="getRequestTypeDisplay(selectedRequest.request_type)" readonly>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Motive</label>
+              <textarea class="form-control" rows="3" readonly>{{ selectedRequest.motive }}</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Justification</label>
+              <textarea class="form-control" rows="3" readonly>{{ selectedRequest.justification }}</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Current Status</label>
+              <span [class]="getStatusClass(selectedRequest.status)" class="d-block p-2">
+                {{ getStatusDisplay(selectedRequest.status) }}
+              </span>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Update Status</label>
+              <select class="form-select" [(ngModel)]="statusUpdate.status">
+                <option value="pending">Pending</option>
+                <option value="in_review">In Review</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="ready">Ready</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="selectedRequest = null">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="updateRequestStatus()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+  }

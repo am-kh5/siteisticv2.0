@@ -1,0 +1,28 @@
+/* Custom enhancements on top of Bootstrap */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+  }
+  
+  .table th {
+    border-top: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+  }
+  
+  .bi {
+    vertical-align: middle;
+  }
+  
+  .alert {
+    display: inline-flex;
+    align-items: center;
+  }

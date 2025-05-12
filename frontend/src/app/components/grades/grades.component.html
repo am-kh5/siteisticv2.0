@@ -1,0 +1,36 @@
+<div class="grades-container">
+    <h2 class="grades-title">Academic Grades</h2>
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      Loading grades...
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="error && !isLoading" class="error-message">
+      {{ error }}
+    </div>
+  
+    <!-- Grades List -->
+    <div *ngIf="!isLoading && !error">
+      <div *ngIf="grades && grades.length > 0; else noGrades">
+        <div class="grade-card" *ngFor="let grade of grades">
+          <div class="subject-info">
+            <span class="subject-code">{{ grade.subject_code }}</span>
+            <span class="subject-name">{{ grade.subject_name }}</span>
+          </div>
+          <div class="grade-info">
+            <span class="grade-value">{{ grade.grade }}</span>
+            <span class="grade-max">/ 20</span>
+          </div>
+        </div>
+      </div>
+  
+      <ng-template #noGrades>
+        <div class="no-grades">
+          No grades available for this student
+        </div>
+      </ng-template>
+    </div>
+  </div>

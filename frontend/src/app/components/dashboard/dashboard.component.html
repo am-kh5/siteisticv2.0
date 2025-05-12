@@ -1,0 +1,120 @@
+<div class="dashboard-container d-flex flex-column vh-100">
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-mortarboard-fill me-2"></i>ISTIC
+      </a>
+
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" 
+              data-bs-toggle="collapse" data-bs-target="#navbarContent"
+              aria-controls="navbarContent" aria-expanded="false" 
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <!-- Navigation Content -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <!-- Student-only links -->
+          <ng-container *ngIf="currentRole === 'student'">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/dashboardelem" routerLinkActive="active">
+                <i class="bi bi-house-door"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/events" routerLinkActive="active">
+                <i class="bi bi-clock-history"></i> Events
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/dashboard/profile', authService.get_user_id()]" routerLinkActive="active">
+                <i class="bi bi-person-fill me-1"></i>Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/dashboard/grades', authService.get_user_id()]" routerLinkActive="active">
+                <i class="bi bi-journal-check me-1"></i>Grades
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/dashboard/absences', authService.get_user_id()]" routerLinkActive="active">
+                <i class="bi bi-calendar-x me-1"></i>Absences
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/dashboard/requests', authService.get_user_id()]" routerLinkActive="active">
+                <i class="bi bi-journal-text me-1"></i>My Requests
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Admin-only links -->
+          <ng-container *ngIf="currentRole === 'admin'">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/dashboardelem" routerLinkActive="active">
+                <i class="bi bi-house-door"></i>Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/events" routerLinkActive="active">
+                <i class="bi bi-clock-history"></i> Events
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/adminprofile" routerLinkActive="active">
+                <i class="bi bi-shield-lock me-1"></i>Admin Panel
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/admingrades" routerLinkActive="active">
+                <i class="bi bi-pencil-square me-1"></i>Manage Grades
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/students" routerLinkActive="active">
+                <i class="bi bi-people"></i> Students
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/adminrequests" routerLinkActive="active">
+                <i class="bi bi-list-check me-1"></i>Manage Requests
+              </a>
+            </li>
+          </ng-container>
+
+        </ul>
+
+        <!-- User Dropdown -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown ms-auto">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle me-1"></i>
+              {{ currentRole | titlecase }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li>
+                <a class="dropdown-item" (click)="logout()">
+                  <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="container-fluid flex-grow-1 p-4 bg-light">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

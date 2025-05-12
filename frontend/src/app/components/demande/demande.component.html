@@ -1,0 +1,141 @@
+<div class="container mt-4">
+    <h2>My Requests</h2>
+    
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Error State -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <!-- Create Request Button -->
+    <button class="btn btn-primary mb-3" (click)="toggleCreateForm()">
+      {{ showCreateForm ? 'Cancel' : 'Create New Request' }}
+    </button>
+  
+    <!-- Create Request Form -->
+    <div *ngIf="showCreateForm" class="card mb-4">
+      <div class="card-header">
+        <h5>Create New Request</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="createError" class="alert alert-danger">
+          {{ createError }}
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Request Type</label>
+          <select class="form-select" [(ngModel)]="newRequest.request_type" required>
+            <option value="">Select a request type</option>
+            <option value="attestation de presence">Attestation de Presence</option>
+            <option value="attestation de reussite">Attestation de Reussite</option>
+          </select>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Motive</label>
+          <input type="text" class="form-control" [(ngModel)]="newRequest.motive" required>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Justification</label>
+          <textarea class="form-control" [(ngModel)]="newRequest.justification" rows="3" required></textarea>
+        </div>
+  
+        <button class="btn btn-primary" (click)="createRequest()" [disabled]="isCreating">
+          <span *ngIf="isCreating" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{ isCreating ? 'Creating...' : 'Submit Request' }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Edit Request Form -->
+    <div *ngIf="editingRequest" class="card mb-4">
+      <div class="card-header">
+        <h5>Edit Request</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="editError" class="alert alert-danger">
+          {{ editError }}
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Request Type</label>
+          <input type="text" class="form-control" [value]="getRequestTypeDisplay(editingRequest.request_type)" disabled>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Motive</label>
+          <input type="text" class="form-control" [(ngModel)]="editMotive" required>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Justification</label>
+          <textarea class="form-control" [(ngModel)]="editJustification" rows="3" required></textarea>
+        </div>
+  
+        <button class="btn btn-primary me-2" (click)="saveEdit()" [disabled]="isEditing">
+          <span *ngIf="isEditing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{ isEditing ? 'Saving...' : 'Save Changes' }}
+        </button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  
+    <!-- Empty State -->
+    <div *ngIf="requests && requests.length === 0 && !showCreateForm && !editingRequest" class="alert alert-info">
+      You haven't made any requests yet. Click "Create New Request" to get started.
+    </div>
+  
+    <!-- Requests List -->
+    <div *ngIf="requests && requests.length > 0 && !editingRequest">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Motive</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let request of requests">
+              <td>{{ getRequestTypeDisplay(request.request_type) }}</td>
+              <td>
+                <span [ngClass]="{
+                  'badge bg-secondary': request.status === 'pending',
+                  'badge bg-primary': request.status === 'in_review',
+                  'badge bg-success': request.status === 'approved',
+                  'badge bg-danger': request.status === 'rejected',
+                  'badge bg-warning': request.status === 'ready'
+                }">
+                  {{ request.status }}
+                </span>
+              </td>
+              <td>{{ request.motive }}</td>
+              <td>{{ request.created_at | date:'medium' }}</td>
+              <td>
+                <button *ngIf="request.status === 'pending'" 
+                        class="btn btn-sm btn-danger me-2"
+                        (click)="deleteRequest(request.request_id)">
+                  Delete
+                </button>
+                <button *ngIf="request.status === 'pending'" 
+                        class="btn btn-sm btn-primary"
+                        (click)="editRequest(request)">
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

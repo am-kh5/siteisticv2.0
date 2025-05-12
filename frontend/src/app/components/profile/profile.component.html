@@ -1,0 +1,128 @@
+<div class="profile-container">
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="uploadSuccess" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="!profile && !error" class="loading">
+    Loading profile...
+  </div>
+
+  <!-- Profile Data -->
+  <div *ngIf="profile" class="profile-card">
+    <!-- Profile Picture Section -->
+    <div class="profile-picture-section">
+      <div class="profile-pic-container">
+        <!-- Show profile picture or placeholder -->
+        <div *ngIf="profilePicUrl; else noProfilePic" class="current-pic">
+          <img 
+            [src]="profilePicUrl + '?t=' + timestamp" 
+            alt="Profile Picture"
+            class="profile-pic"
+            (error)="handleImageError($event)"
+          >
+          <div class="upload-indicator" *ngIf="isUploading">
+            <i class="fas fa-spinner fa-spin"></i>
+            Uploading...
+          </div>
+        </div>
+
+        <ng-template #noProfilePic>
+          <div class="no-picture-container">
+            <div class="no-picture-content">
+              <div class="placeholder-icon">
+                <i class="fas fa-user-circle"></i>
+              </div>
+              <p class="placeholder-text">No profile picture available</p>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="profile-header">
+      <h2>Student Profile</h2>
+    </div>
+
+    <div class="profile-details">
+      <div class="detail-row">
+        <span class="detail-label">ID:</span>
+        <span class="detail-value">{{ profile.user_id }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Username:</span>
+        <span class="detail-value">{{ profile.username }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Email:</span>
+        <span class="detail-value">{{ profile.email }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Class:</span>
+        <span class="detail-value">{{ profile.classe }}</span>
+      </div>
+
+      <div *ngIf="profile.year" class="detail-row">
+        <span class="detail-label">Academic Year:</span>
+        <span class="detail-value">{{ profile.year }}</span>
+      </div>
+
+      <div *ngIf="profile.specialty" class="detail-row">
+        <span class="detail-label">Specialty:</span>
+        <span class="detail-value">{{ profile.specialty }}</span>
+      </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section">
+      <h3>Update Profile Picture</h3>
+      <div class="upload-form">
+        <div class="form-group">
+          <input 
+            type="file" 
+            id="profilePicInput"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            #fileInput
+            [disabled]="isUploading"
+          >
+          <label for="profilePicInput" class="file-input-label" [class.disabled]="isUploading">
+            <i class="fas fa-cloud-upload-alt"></i> 
+            {{ selectedFile ? 'Change Image' : 'Choose Image' }}
+          </label>
+          
+          <div *ngIf="selectedFile" class="file-info">
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <span class="file-size">{{ (selectedFile.size / 1024).toFixed(2) }} KB</span>
+            <button class="cancel-btn" (click)="clearSelection()" [disabled]="isUploading">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <button 
+          class="upload-btn" 
+          (click)="uploadProfilePic()" 
+          [disabled]="!selectedFile || isUploading"
+        >
+          <i class="fas" [class.fa-spinner]="isUploading" [class.fa-spin]="isUploading" [class.fa-upload]="!isUploading"></i> 
+          {{ isUploading ? 'Uploading...' : 'Upload Picture' }}
+        </button>
+      </div>
+      
+      <div class="upload-requirements">
+        <p><i class="fas fa-info-circle"></i> Maximum file size: 5MB</p>
+        <p><i class="fas fa-info-circle"></i> Accepted formats: JPG, PNG</p>
+      </div>
+    </div>
+  </div>
+</div>

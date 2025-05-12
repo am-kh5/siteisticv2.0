@@ -1,0 +1,29 @@
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+  }
+  
+  .event-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-text {
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
